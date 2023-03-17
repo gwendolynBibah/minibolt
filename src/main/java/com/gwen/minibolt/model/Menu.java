@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+import java.util.Set;
+
 @Data
 @Entity
 @Table(name = "menu")
@@ -14,8 +16,8 @@ public class Menu {
     private String menuName;
 
     //food foreign key
-    @OneToOne(cascade = CascadeType.ALL)
-    private Food food;
+    @OneToMany
+    private Set<Food> food;
 
     //restaurant key
     @ManyToOne

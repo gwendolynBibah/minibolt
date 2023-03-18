@@ -5,22 +5,20 @@ import jakarta.persistence.*;
 import lombok.Data;
 @Data
 @Entity
-@Table(name = "restaurant")
+@Table(name = "restaurants")
 public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long restaurantId;
+    private Long id;
     private String location;
     private double rating;
-    //private String themePicture;
-   // private int userId;
-    private String restaurantName;
+    private String name;
 
     //foreign key ;
-    @ManyToOne
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User owner;
 
     //image foreign key
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     public Image image;
 }

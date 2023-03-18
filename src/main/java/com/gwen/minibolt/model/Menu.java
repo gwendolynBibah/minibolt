@@ -2,22 +2,24 @@ package com.gwen.minibolt.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.data.annotation.PersistenceConstructor;
+
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "menu")
+@Table(name = "menus")
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long menuId;
-    private String menuName;
+    private Long id;
+    private String name;
 
     //food foreign key
-    @OneToOne(cascade = CascadeType.ALL)
-    private Food food;
+    @OneToMany(mappedBy = "menu",cascade=CascadeType.ALL)
+    private List<Food> foods;
 
     //restaurant key
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 }

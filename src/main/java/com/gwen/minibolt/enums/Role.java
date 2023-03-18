@@ -1,5 +1,5 @@
 package com.gwen.minibolt.enums;
 
 public enum Role {
-    ADMIN, OWNER, USER;
+    ADMIN, OWNER, USER
 }

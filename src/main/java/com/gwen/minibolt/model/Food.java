@@ -9,8 +9,11 @@ import lombok.Data;
 public class Food {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long foodId;
-    private String foodName;
-    private Double foodPrice;
-    private String foodDescription;
+    private Long id;
+    private String name;
+    private double price;
+    private String description;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Menu menu;
+
 }

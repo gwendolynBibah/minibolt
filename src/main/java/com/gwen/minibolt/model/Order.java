@@ -1,29 +1,31 @@
 package com.gwen.minibolt.model;
 
+
 import com.gwen.minibolt.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long id;
     @Enumerated(value = EnumType.STRING)
-    private OrderStatus orderStatus;
+    private OrderStatus status;
     private Date timestamp;
+    private double totalPrice;
 
     //food foreign key
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Food> food;
+    private List<Food> food;
 
     //user foreign key
-    @ManyToOne
+    @ManyToOne  (cascade = CascadeType.ALL)
     private User user;
 
 }

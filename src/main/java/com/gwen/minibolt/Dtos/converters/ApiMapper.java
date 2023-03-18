@@ -13,15 +13,12 @@ public interface ApiMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateUserFromUserDto(UserDto userDto1, @MappingTarget User user);
 
-    @Mapping(source = "menuName", target = "menu.name")
-    Food foodDtoToFood(FoodDto foodDto);
-
-    @Mapping(source = "menu.name", target = "menuName")
-    FoodDto foodToFoodDto(Food food);
-
-    @Mapping(source = "menuName", target = "menu.name")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Food updateFoodFromFoodDto(FoodDto foodDto, @MappingTarget Food food);
+//    Food foodDtoToFood(FoodDto foodDto);
+//
+//    FoodDto foodToFoodDto(Food food);
+//
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    Food updateFoodFromFoodDto(FoodDto foodDto, @MappingTarget Food food);
 
     Menu menuDtoToMenu(MenuDto menuDto);
 
@@ -58,4 +55,17 @@ public interface ApiMapper {
     @InheritConfiguration(name = "restaurantDtoToRestaurant")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Restaurant updateRestaurantFromRestaurantDto(RestaurantDto restaurantDto, @MappingTarget Restaurant restaurant);
+
+    @Mapping(source = "menuId", target = "menu.id")
+    @Mapping(source = "menuName", target = "menu.name")
+    @Mapping(source = "menuRestaurantId", target = "menu.restaurant.id")
+    @Mapping(source = "menuRestaurantName", target = "menu.restaurant.name")
+    Food foodDtoToFood(FoodDto foodDto);
+
+    @InheritInverseConfiguration(name = "foodDtoToFood")
+    FoodDto foodToFoodDto(Food food);
+
+    @InheritConfiguration(name = "foodDtoToFood")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Food updateFoodFromFoodDto(FoodDto foodDto, @MappingTarget Food food);
 }

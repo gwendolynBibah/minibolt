@@ -1,4 +1,4 @@
-package com.gwen.minibolt.service;
+package com.gwen.minibolt.service.ServiceInt;
 
 import com.gwen.minibolt.Dtos.OrderDto;
 

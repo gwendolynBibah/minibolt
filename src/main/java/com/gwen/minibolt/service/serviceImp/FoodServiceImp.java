@@ -1,9 +1,11 @@
 package com.gwen.minibolt.service.serviceImp;
 
+import com.gwen.minibolt.Dtos.CreateFoodDto;
 import com.gwen.minibolt.Dtos.FoodDto;
 import com.gwen.minibolt.Dtos.converters.ApiMapper;
 import com.gwen.minibolt.repository.FoodRepository;
-import com.gwen.minibolt.service.FoodService;
+import com.gwen.minibolt.repository.MenuRepository;
+import com.gwen.minibolt.service.ServiceInt.FoodService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.Objects;
 @Slf4j
 public class FoodServiceImp implements FoodService {
     private final FoodRepository foodRepository;
+    private final MenuRepository menuRepository;
     private final ApiMapper mapper;
 
     @Override
@@ -24,10 +27,16 @@ public class FoodServiceImp implements FoodService {
     }
 
     @Override
-    public FoodDto createFood(FoodDto food) {
-        var a = mapper.foodDtoToFood(food);
-        var b = foodRepository.save(a);
-        return mapper.foodToFoodDto(b);
+    public FoodDto createFood(CreateFoodDto food) {
+
+
+        return mapper.foodToFoodDto(foodRepository.save(mapper.createFoodDtoToFood(food)));
+//        return menuRepository.findById(food.menuId()).map(existingMenu->{
+//                Food newFood = mapper.createFoodDtoToFood(food);
+//            System.out.println(newFood);
+//                newFood.setMenu(existingMenu);
+//        return mapper.foodToFoodDto(foodRepository.save(newFood));
+//        }).orElseThrow();
     }
 
     @Override
@@ -38,9 +47,21 @@ public class FoodServiceImp implements FoodService {
     @Override
     public void deleteFood(Long id) {
         if (Objects.nonNull(id)) {
-            Long userId = getFoodFromDatabase(id).id();
-            foodRepository.deleteById(userId);
+            foodRepository.deleteById(getFoodFromDatabase(id).id());
         }
+    }
+
+    @Override
+    public FoodDto updateFood(Long id, CreateFoodDto food) {
+        return this.foodRepository.findById(id).map(existingFood->
+         mapper.foodToFoodDto(this.foodRepository.save(mapper.updateFoodFromCreateFoodDto(food,existingFood)))
+        ).orElseThrow(() ->
+                {
+                    String message = String.format("Food with id %d not found.", id);
+                    log.debug(message);
+                    return new RuntimeException(message);
+                }
+        );
     }
 
     private FoodDto getFoodFromDatabase(long id) {

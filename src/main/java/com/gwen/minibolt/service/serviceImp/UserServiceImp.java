@@ -1,10 +1,14 @@
 package com.gwen.minibolt.service.serviceImp;
 
+import com.gwen.minibolt.Dtos.RegisterRequest;
+import com.gwen.minibolt.Dtos.UpdateUserRequest;
 import com.gwen.minibolt.Dtos.UserDto;
 import com.gwen.minibolt.Dtos.converters.ApiMapper;
 import com.gwen.minibolt.repository.UserRepository;
-import com.gwen.minibolt.service.UserService;
+import com.gwen.minibolt.service.ServiceInt.UserService;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +30,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto register(UserDto user){
-        var newUser = userRepository.save(mapper.userDtoToUser(user));
-        return mapper.userToUserDto(newUser);
+    public UserDto register(RegisterRequest registerRequest){
+        return mapper.userToUserDto(userRepository.save(mapper.registerRequestToUser(registerRequest)));
+    }
+
+    @Override
+    public UserDto updateUserDetails(UpdateUserRequest user, @NotNull @NotBlank Long userId) {
+        return this.userRepository.findById(userId)
+                .map(existingUser ->
+                        mapper.userToUserDto(this.userRepository.save(mapper.updateUserFromUpdateUserRequest(user,existingUser)))
+                ).orElseThrow(() ->
+                {
+                    String message = String.format("User with id %d not found.", userId);
+                    log.debug(message);
+                    return new RuntimeException(message);
+                });
     }
 
     @Override
@@ -39,17 +55,19 @@ public class UserServiceImp implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (Objects.nonNull(id)) {
-        Long userId = getUserFromDatabase(id).userId();
-        userRepository.deleteById(userId);
+            userRepository.deleteById(getUserFromDatabase(id).userId());
         }
     }
-    private UserDto getUserFromDatabase(long id) {
-        return userRepository.findById(id).map(mapper::userToUserDto)
+    private UserDto getUserFromDatabase(long userId) {
+
+        return userRepository.findById(userId).map(mapper::userToUserDto)
                 .orElseThrow(() ->
                 {
-                    String message = String.format("User with id %d not found.", id);
+                    String message = String.format("User with id %d not found.", userId);
                     log.debug(message);
                     return new RuntimeException(message);
                 });
     }
+
 }
+

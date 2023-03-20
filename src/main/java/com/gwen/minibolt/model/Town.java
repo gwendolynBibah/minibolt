@@ -8,19 +8,21 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name = "menus")
-public class Menu {
+@Table(name = "town")
+public class Town {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
+
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "menu")
-    private List<Food> foods;
+    @ManyToOne
+    @JoinColumn(name = "region_id")
+    private Regional region;
 
-    //restaurant key
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "location")
+//    private List<Restaurant> restaurants;
+
 }

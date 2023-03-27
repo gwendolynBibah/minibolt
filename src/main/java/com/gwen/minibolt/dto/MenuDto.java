@@ -1,4 +1,6 @@
-package com.gwen.minibolt.model;
+package com.gwen.minibolt.dto;
+
+import com.gwen.minibolt.model.Menu;
 
 import java.io.Serializable;
 

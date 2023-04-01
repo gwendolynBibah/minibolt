@@ -4,7 +4,6 @@ import com.gwen.minibolt.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.gwen.minibolt.config;
+package com.gwen.minibolt.exceptions;
 
 import com.gwen.minibolt.exceptions.ApiError;
 import jakarta.validation.ConstraintViolation;

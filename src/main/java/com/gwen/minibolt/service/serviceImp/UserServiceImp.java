@@ -1,12 +1,12 @@
 package com.gwen.minibolt.service.serviceImp;
 
-import com.gwen.minibolt.Dtos.RegisterRequest;
-import com.gwen.minibolt.Dtos.UpdateUserRequest;
-import com.gwen.minibolt.Dtos.UserDto;
-import com.gwen.minibolt.Dtos.converters.ApiMapper;
+import com.gwen.minibolt.dto.RegisterRequest;
+import com.gwen.minibolt.dto.UpdateUserRequest;
+import com.gwen.minibolt.dto.UserDto;
+import com.gwen.minibolt.dto.converters.ApiMapper;
+import com.gwen.minibolt.model.User;
 import com.gwen.minibolt.repository.UserRepository;
 import com.gwen.minibolt.service.ServiceInt.UserService;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -30,15 +30,19 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto register(RegisterRequest registerRequest){
-        return mapper.userToUserDto(userRepository.save(mapper.registerRequestToUser(registerRequest)));
+    public UserDto register(RegisterRequest registerRequest) {
+        System.err.println(registerRequest);
+        User userEntity = mapper.registerRequestToUser(registerRequest);
+        System.err.println(userEntity);
+        userEntity.setDeleted(Boolean.FALSE);
+        return mapper.userToUserDto(userRepository.save(userEntity));
     }
 
     @Override
     public UserDto updateUserDetails(UpdateUserRequest user, @NotNull @NotBlank Long userId) {
         return this.userRepository.findById(userId)
                 .map(existingUser ->
-                        mapper.userToUserDto(this.userRepository.save(mapper.updateUserFromUpdateUserRequest(user,existingUser)))
+                        mapper.userToUserDto(this.userRepository.save(mapper.updateUserFromUpdateUserRequest(user, existingUser)))
                 ).orElseThrow(() ->
                 {
                     String message = String.format("User with id %d not found.", userId);
@@ -55,9 +59,10 @@ public class UserServiceImp implements UserService {
     @Override
     public void deleteUser(Long id) {
         if (Objects.nonNull(id)) {
-            userRepository.deleteById(getUserFromDatabase(id).userId());
+            userRepository.findById(id).ifPresent(userRepository::delete);
         }
     }
+
     private UserDto getUserFromDatabase(long userId) {
 
         return userRepository.findById(userId).map(mapper::userToUserDto)

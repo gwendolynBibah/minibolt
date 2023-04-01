@@ -2,7 +2,7 @@ package com.gwen.minibolt.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gwen.minibolt.enums.OrderStatus;
+import com.gwen.minibolt.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,18 +17,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(value = EnumType.STRING)
-    private OrderStatus status;
+    private ORDER_STATUS status;
     private Date timestamp;
     private double totalPrice;
 
     //food foreign key
     @JsonIgnore
-    @OneToMany(mappedBy="order")
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
     //user foreign key
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
 }

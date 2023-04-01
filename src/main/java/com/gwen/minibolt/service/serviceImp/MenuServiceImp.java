@@ -1,10 +1,11 @@
 package com.gwen.minibolt.service.serviceImp;
 
 import com.gwen.minibolt.Dtos.MenuDto;
-import com.gwen.minibolt.Dtos.converters.ApiMapper;
-import com.gwen.minibolt.Dtos.CreateMenuDto;
+import com.gwen.minibolt.dto.CreateMenuDto;
+import com.gwen.minibolt.dto.converters.ApiMapper;
+import com.gwen.minibolt.enums.GENERAL_STATUS;
+import com.gwen.minibolt.model.Menu;
 import com.gwen.minibolt.repository.MenuRepository;
-import com.gwen.minibolt.repository.RestaurantRepository;
 import com.gwen.minibolt.service.ServiceInt.MenuService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class MenuServiceImp implements MenuService {
     private final MenuRepository menuRepository;
-    private final RestaurantRepository restaurantRepository;
     private final ApiMapper mapper;
 
     @Override
@@ -30,20 +30,24 @@ public class MenuServiceImp implements MenuService {
     }
 
     @Override
-    public List<MenuDto> getRestaurantMenuList(Long restaurantId){
+    public List<MenuDto> getRestaurantMenuList(Long restaurantId) {
         return this.menuRepository.findAllByRestaurantId(restaurantId)
                 .stream().map(mapper::menuToMenuDto).toList();
 
     }
+
     @Override
-    public Map<String, List<MenuDto>> getAllRestaurantAndTheirMenu(){
+    public Map<String, List<MenuDto>> getAllRestaurantAndTheirMenu() {
         return this.menuRepository.findAll().stream().map(mapper::menuToMenuDto)
-                .collect(Collectors.groupingBy(menuDto->menuDto.restaurant().name()));
+                .collect(Collectors.groupingBy(menuDto -> menuDto.restaurant().name()));
 
     }
+
     @Override
     public MenuDto createMenu(CreateMenuDto menuDto) {
-        return mapper.menuToMenuDto(menuRepository.save(mapper.createMenuDtoToMenu(menuDto)));
+        Menu menu = mapper.createMenuDtoToMenu(menuDto);
+        menu.setStatus(GENERAL_STATUS.UNAVAILABLE);
+        return mapper.menuToMenuDto(menuRepository.save(menu));
     }
 
     @Override
@@ -53,11 +57,11 @@ public class MenuServiceImp implements MenuService {
 
     @Override
     public void deleteMenu(Long id) {
-        if (Objects.nonNull(id)){
-            this.menuRepository.deleteById(this.getMenuFromDatabase(id).id());
+        if (Objects.nonNull(id)) {
+            menuRepository.findById(id).ifPresent(menuRepository::delete);
         }
-
     }
+
     private MenuDto getMenuFromDatabase(long id) {
         return menuRepository.findById(id).map(mapper::menuToMenuDto)
                 .orElseThrow(() ->

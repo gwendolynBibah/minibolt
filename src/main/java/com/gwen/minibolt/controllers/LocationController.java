@@ -1,6 +1,6 @@
 package com.gwen.minibolt.controllers;
 
-import com.gwen.minibolt.Dtos.TownDto;
+import com.gwen.minibolt.dto.TownDto;
 import com.gwen.minibolt.service.ServiceInt.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class LocationController {
     private final LocationService locationService;
 
     @GetMapping
-    public List<TownDto> getLocations(){
+    public List<TownDto> getLocations() {
         return this.locationService.getLocations();
     }
 }

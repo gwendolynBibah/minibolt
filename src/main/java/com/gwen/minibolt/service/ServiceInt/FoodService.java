@@ -1,16 +1,20 @@
 package com.gwen.minibolt.service.ServiceInt;
 
 
-import com.gwen.minibolt.Dtos.CreateFoodDto;
-import com.gwen.minibolt.Dtos.FoodDto;
+import com.gwen.minibolt.dto.CreateFoodDto;
+import com.gwen.minibolt.dto.FoodDto;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 public interface FoodService {
     List<FoodDto> getAllFood();
-    FoodDto createFood(CreateFoodDto food);
-    FoodDto getFood(long id);
-    void deleteFood(Long id);
 
-    FoodDto updateFood(Long id, CreateFoodDto food);
+    FoodDto createFood(CreateFoodDto food);
+
+    FoodDto getFood(@NotNull long id);
+
+    void deleteFood(@NotNull Long id);
+
+    FoodDto updateFood(@NotNull Long id, CreateFoodDto food);
 }

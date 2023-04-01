@@ -1,4 +1,4 @@
-package com.gwen.minibolt.Dtos.subDto;
+package com.gwen.minibolt.dto.subDto;
 
 import com.gwen.minibolt.model.Food;
 

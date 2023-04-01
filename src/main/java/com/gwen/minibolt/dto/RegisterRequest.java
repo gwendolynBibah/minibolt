@@ -1,6 +1,6 @@
-package com.gwen.minibolt.Dtos;
+package com.gwen.minibolt.dto;
 
-import com.gwen.minibolt.enums.Role;
+import com.gwen.minibolt.enums.ROLE;
 import com.gwen.minibolt.model.User;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -16,6 +16,7 @@ import java.io.Serializable;
 public record RegisterRequest(
         @NotNull @NotBlank(message = "name is mandatory.") String name,
         @NotBlank(message = "password is mandatory")
-        @Size(min = 4,message = "password should have a minimum of 4 character.")
-        @NotNull  String password,
-        @Enumerated(value = EnumType.STRING) Role roles)implements Serializable {}
+        @Size(min = 4, message = "password should have a minimum of 4 character.")
+        @NotNull String password,
+        @Enumerated(value = EnumType.STRING) ROLE role) implements Serializable {
+}

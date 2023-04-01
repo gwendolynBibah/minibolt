@@ -1,6 +1,6 @@
 package com.gwen.minibolt.service.ServiceInt;
 
-import com.gwen.minibolt.Dtos.TownDto;
+import com.gwen.minibolt.dto.TownDto;
 
 import java.util.List;
 

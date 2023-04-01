@@ -1,6 +1,7 @@
-package com.gwen.minibolt.Dtos.converters;
+package com.gwen.minibolt.dto.converters;
 
-import com.gwen.minibolt.Dtos.*;
+import com.gwen.minibolt.Dtos.MenuDto;
+import com.gwen.minibolt.dto.*;
 import com.gwen.minibolt.model.*;
 import org.mapstruct.*;
 
@@ -8,6 +9,7 @@ import org.mapstruct.*;
 public interface ApiMapper {
     @Mapping(source = "userId", target = "id")
     @Mapping(source = "userName", target = "name")
+//    @Mapping(source = "isActive", target = "isActive")
     User userDtoToUser(UserDto userDto);
 
     @InheritInverseConfiguration(name = "userDtoToUser")

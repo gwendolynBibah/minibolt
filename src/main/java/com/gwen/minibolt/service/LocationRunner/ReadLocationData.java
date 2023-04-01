@@ -2,8 +2,8 @@ package com.gwen.minibolt.service.LocationRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gwen.minibolt.model.Regional;
-import com.gwen.minibolt.repository.RegionalRepository;
 import com.gwen.minibolt.model.Town;
+import com.gwen.minibolt.repository.RegionalRepository;
 import com.gwen.minibolt.repository.TownRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

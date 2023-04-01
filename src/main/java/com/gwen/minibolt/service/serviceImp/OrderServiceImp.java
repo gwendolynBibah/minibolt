@@ -1,8 +1,7 @@
 package com.gwen.minibolt.service.serviceImp;
 
-import com.gwen.minibolt.Dtos.OrderDto;
-import com.gwen.minibolt.Dtos.converters.ApiMapper;
-import com.gwen.minibolt.repository.OrderItemRepository;
+import com.gwen.minibolt.dto.OrderDto;
+import com.gwen.minibolt.dto.converters.ApiMapper;
 import com.gwen.minibolt.repository.OrderRepository;
 import com.gwen.minibolt.service.ServiceInt.OrderService;
 import lombok.AllArgsConstructor;
@@ -17,8 +16,8 @@ import java.util.Objects;
 @Slf4j
 public class OrderServiceImp implements OrderService {
     private final OrderRepository orderRepository;
-    private final OrderItemRepository orderItemRepository;
     private final ApiMapper mapper;
+
     @Override
     public List<OrderDto> getAllOrder() {
         return orderRepository.findAll().stream().map(mapper::orderToOrderDto).toList();
@@ -36,11 +35,22 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public void deleteOrder(Long id) {
-        if(Objects.nonNull(id)){
-            orderRepository.deleteById(getOrderFromDatabase(id).id());
+        if (Objects.nonNull(id)) {
+            orderRepository.findById(id).ifPresent(orderRepository::delete);
         }
 
     }
+
+    /**
+     * @param orderId
+     * @param orderDto
+     * @return
+     */
+    @Override
+    public OrderDto updateOrder(Long orderId, OrderDto orderDto) {
+        return null;
+    }
+
     private OrderDto getOrderFromDatabase(long id) {
         return orderRepository.findById(id).map(mapper::orderToOrderDto)
                 .orElseThrow(() ->

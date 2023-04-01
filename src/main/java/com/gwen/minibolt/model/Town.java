@@ -1,10 +1,7 @@
 package com.gwen.minibolt.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-
-import java.util.List;
 
 @Data
 @Entity

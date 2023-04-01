@@ -1,13 +1,14 @@
 package com.gwen.minibolt.service.serviceImp;
 
-import com.gwen.minibolt.Dtos.TownDto;
-import com.gwen.minibolt.Dtos.converters.ApiMapper;
+import com.gwen.minibolt.dto.TownDto;
+import com.gwen.minibolt.dto.converters.ApiMapper;
 import com.gwen.minibolt.repository.TownRepository;
 import com.gwen.minibolt.service.ServiceInt.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LocationServiceImp implements LocationService {

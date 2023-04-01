@@ -1,4 +1,4 @@
-package com.gwen.minibolt.Dtos;
+package com.gwen.minibolt.dto;
 
 import com.gwen.minibolt.model.Order;
 import com.gwen.minibolt.model.OrderItem;

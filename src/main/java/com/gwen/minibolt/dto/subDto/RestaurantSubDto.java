@@ -1,6 +1,5 @@
-package com.gwen.minibolt.Dtos.subDto;
+package com.gwen.minibolt.dto.subDto;
 
-import com.gwen.minibolt.Dtos.RRTownDto;
 import com.gwen.minibolt.model.Restaurant;
 
 import java.io.Serializable;

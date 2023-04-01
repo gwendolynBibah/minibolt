@@ -37,7 +37,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
-    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
+    public ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex) {
         String error = ex.getParameterName() + "parameter is missing";
         ApiError exception = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
         return new ResponseEntity<>(exception, new HttpHeaders(), exception.getStatus());

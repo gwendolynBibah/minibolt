@@ -11,11 +11,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class LocationServiceImp implements LocationService {
+public class  LocationServiceImp implements LocationService {
 
     private final TownRepository townRepository;
     private final ApiMapper mapper;
-
     @Override
     public List<TownDto> getLocations() {
         return townRepository.findAll().stream().map(mapper::townToTownDto).toList();

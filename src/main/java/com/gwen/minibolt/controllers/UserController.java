@@ -33,7 +33,7 @@ public class UserController {
         return this.userService.getUser(userId);
     }
 
-    @PostMapping
+    @PostMapping("sign-up")
     public UserDto registerUser(@RequestBody @Valid RegisterRequest user) {
         return this.userService.register(user);
     }
@@ -64,8 +64,8 @@ public class UserController {
     }
 
     @GetMapping("google")
-    public Principal users(Principal principal){
-        return principal;
+    public String users(Principal principal){
+        return this.userService.signInWithGoogle(principal);
     }
 
 

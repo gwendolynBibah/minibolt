@@ -4,7 +4,6 @@ import com.gwen.minibolt.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,12 +11,12 @@ import java.util.stream.Collectors;
 public class UserInfoUserDetails implements UserDetails {
 
 
-    private String name;
-    private String password;
-    private List<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
 
     public UserInfoUserDetails(User userInfo) {
-        name = userInfo.getName();
+        username = userInfo.getEmail();
         password = userInfo.getPassword();
         authorities = Arrays.stream(userInfo.getRole().name().split(","))
                 .map(SimpleGrantedAuthority::new)
@@ -36,7 +35,7 @@ public class UserInfoUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return username;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.gwen.minibolt.config;
 
 
-import com.gwen.minibolt.filter.JwtFilter;
+import com.gwen.minibolt.config.filter.JwtFilter;
 import com.gwen.minibolt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +33,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/swagger-ui/**","/api-docs","bolt.html","/api/v1/users","/api/v1/users/authenticate").permitAll()
+                .requestMatchers("/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/api-docs/**","/bolt.html",
+                        "/api/v1/users/sign-up","/api/v1/users/authenticate").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/v1/**")
                 .authenticated().and().oauth2Login().and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

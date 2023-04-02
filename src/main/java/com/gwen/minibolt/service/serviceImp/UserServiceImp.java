@@ -5,6 +5,7 @@ import com.gwen.minibolt.dto.RegisterRequest;
 import com.gwen.minibolt.dto.UpdateUserRequest;
 import com.gwen.minibolt.dto.UserDto;
 import com.gwen.minibolt.dto.converters.ApiMapper;
+import com.gwen.minibolt.enums.ROLE;
 import com.gwen.minibolt.model.User;
 import com.gwen.minibolt.repository.UserRepository;
 import com.gwen.minibolt.service.ServiceInt.UserService;
@@ -19,8 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -41,9 +44,18 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto register(RegisterRequest registerRequest) {
+        return saveUserDetails(registerRequest);
+    }
+
+    private UserDto saveUserDetails(RegisterRequest registerRequest) {
         User userEntity = mapper.registerRequestToUser(registerRequest);
         userEntity.setDeleted(Boolean.FALSE);
+        userEntity.setRole(ROLE.USER);
         userEntity.setPassword(passwordEncoder.encode(registerRequest.password()));
+        Optional<User> user = userRepository.findByEmail(registerRequest.email());
+        if (user.isPresent()){
+            return mapper.userToUserDto(user.get());
+        }
         var newUser =  userRepository.save(userEntity);
         return mapper.userToUserDto(newUser);
     }
@@ -51,9 +63,9 @@ public class UserServiceImp implements UserService {
     @Override
     public String generateToken(RegisterRequest user) {
         Authentication authenticate = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(user.name(), user.password()));
+                .authenticate(new UsernamePasswordAuthenticationToken(user.email(), user.password()));
         if (authenticate.isAuthenticated()) {
-            return jwtService.generateToken(user.name());
+            return jwtService.generateToken(user.email());
         } else {
             throw new UsernameNotFoundException("invalid user");
         }
@@ -82,6 +94,17 @@ public class UserServiceImp implements UserService {
         if (Objects.nonNull(id)) {
             userRepository.findById(id).ifPresent(userRepository::delete);
         }
+    }
+
+    /**
+     * @param principal
+     * @return
+     */
+    @Override
+    public String signInWithGoogle(Principal principal) {
+        RegisterRequest registerRequest = new RegisterRequest(principal.getName(), principal.getName());
+        saveUserDetails(registerRequest);
+        return generateToken(registerRequest);
     }
 
     private UserDto getUserFromDatabase(long userId) {

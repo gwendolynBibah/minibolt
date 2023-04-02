@@ -1,4 +1,4 @@
-package com.gwen.minibolt.filter;
+package com.gwen.minibolt.config.filter;
 
 import com.gwen.minibolt.config.JwtService;
 import jakarta.servlet.FilterChain;

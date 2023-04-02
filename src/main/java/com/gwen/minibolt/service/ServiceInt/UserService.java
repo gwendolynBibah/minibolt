@@ -6,6 +6,7 @@ import com.gwen.minibolt.dto.UserDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.security.Principal;
 import java.util.List;
 
 public interface UserService {
@@ -20,4 +21,6 @@ public interface UserService {
     UserDto getUser(long id);
 
     void deleteUser(Long id);
+
+    String signInWithGoogle(Principal principal);
 }

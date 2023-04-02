@@ -1,5 +1,6 @@
 package com.gwen.minibolt.service.serviceImp;
 
+import com.gwen.minibolt.config.JwtService;
 import com.gwen.minibolt.dto.RegisterRequest;
 import com.gwen.minibolt.dto.UpdateUserRequest;
 import com.gwen.minibolt.dto.UserDto;
@@ -11,6 +12,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +28,10 @@ import java.util.Objects;
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final ApiMapper mapper;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -31,11 +41,22 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDto register(RegisterRequest registerRequest) {
-        System.err.println(registerRequest);
         User userEntity = mapper.registerRequestToUser(registerRequest);
-        System.err.println(userEntity);
         userEntity.setDeleted(Boolean.FALSE);
-        return mapper.userToUserDto(userRepository.save(userEntity));
+        userEntity.setPassword(passwordEncoder.encode(registerRequest.password()));
+        var newUser =  userRepository.save(userEntity);
+        return mapper.userToUserDto(newUser);
+    }
+
+    @Override
+    public String generateToken(RegisterRequest user) {
+        Authentication authenticate = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(user.name(), user.password()));
+        if (authenticate.isAuthenticated()) {
+            return jwtService.generateToken(user.name());
+        } else {
+            throw new UsernameNotFoundException("invalid user");
+        }
     }
 
     @Override

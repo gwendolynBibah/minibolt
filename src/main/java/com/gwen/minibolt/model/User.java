@@ -5,9 +5,11 @@ import com.gwen.minibolt.enums.ROLE;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -24,7 +26,9 @@ public class User {
     private String password;
     private boolean deleted = Boolean.FALSE;
 
+
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders;
 }
+

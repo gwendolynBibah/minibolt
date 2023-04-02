@@ -6,13 +6,13 @@ import com.gwen.minibolt.dto.UserDto;
 import com.gwen.minibolt.enums.ROLE;
 import com.gwen.minibolt.service.ServiceInt.UserService;
 import com.gwen.minibolt.service.ServiceInt.roleBase.AdminPrivilege;
-import com.gwen.minibolt.service.ServiceInt.roleBase.UserPrivilege;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -57,5 +57,16 @@ public class UserController {
     public UserDto suspend(@PathVariable Long userId){
         return this.adminPrivilege.SuspendUser(userId);
     }
+
+    @PostMapping("/authenticate")
+    public String authenticateAndGetToken(@RequestBody RegisterRequest registerRequest){
+    return this.userService.generateToken(registerRequest);
+    }
+
+    @GetMapping("google")
+    public Principal users(Principal principal){
+        return principal;
+    }
+
 
 }

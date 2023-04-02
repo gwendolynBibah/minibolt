@@ -13,6 +13,8 @@ public interface UserService {
 
     UserDto register(RegisterRequest user);
 
+    String generateToken(RegisterRequest user);
+
     UserDto updateUserDetails(UpdateUserRequest user, @NotNull @NotBlank Long userId);
 
     UserDto getUser(long id);

@@ -18,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 
 @RestControllerAdvice
@@ -91,8 +92,13 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
+    public ResponseEntity<Object> handleAll(Exception ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccess(AccessDeniedException ex){
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getLocalizedMessage(), "Access Denied");
+        return new ResponseEntity<>(apiError,new HttpHeaders(),apiError.getStatus());
     }
 }

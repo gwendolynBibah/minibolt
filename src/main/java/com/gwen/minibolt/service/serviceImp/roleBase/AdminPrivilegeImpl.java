@@ -30,7 +30,7 @@ public class AdminPrivilegeImpl implements AdminPrivilege {
     private final OrderItemRepository orderItemRepository;
 
     @Override
-    public UserDto changeUserRole(Long userid, ROLE role) {
+    public UserDto changeUserRole(String userid, ROLE role) {
         return userRepository.findById(userid).map(user -> {
             user.setRole(role);
             return apiMapper.userToUserDto(userRepository.save(user));
@@ -38,7 +38,7 @@ public class AdminPrivilegeImpl implements AdminPrivilege {
     }
 
     @Override
-    public UserDto SuspendUser(Long userId) {
+    public UserDto SuspendUser(String userId) {
         return this.userRepository.findById(userId).map(user -> {
             user.setDeleted(Boolean.TRUE);
             return apiMapper.userToUserDto(userRepository.save(user));
@@ -46,7 +46,7 @@ public class AdminPrivilegeImpl implements AdminPrivilege {
     }
 
     @Override
-    public RestaurantDto suspendRestaurant(Long restaurantId) {
+    public RestaurantDto suspendRestaurant(String restaurantId) {
         return this.restaurantRepository.findById(restaurantId).map(restaurant -> {
             restaurant.setIsActive(Boolean.FALSE);
             return apiMapper.restaurantToRestaurantDto(restaurant);
@@ -63,18 +63,18 @@ public class AdminPrivilegeImpl implements AdminPrivilege {
     }
 
     @Override
-    public UserDto getRestaurantOwner(Long restaurantId) {
+    public UserDto getRestaurantOwner(String restaurantId) {
         return restaurantRepository.findById(restaurantId).map(Restaurant::getOwner)
                 .map(apiMapper::userToUserDto).orElseThrow();
     }
 
     @Override
-    public List<RestaurantDto> getOwnerRestaurant(Long userId) {
+    public List<RestaurantDto> getOwnerRestaurant(String userId) {
         return restaurantRepository.findAllByOwnerId(userId).stream().map(apiMapper::restaurantToRestaurantDto).toList();
     }
 
     @Override
-    public List<OrderItemDto> getRestaurantOrders(Long restaurantId) {
+    public List<OrderItemDto> getRestaurantOrders(String restaurantId) {
         return orderItemRepository.findAllByRestaurantId(restaurantId)
                 .stream().map(apiMapper::orderItemToOrderItemDto).toList();
     }

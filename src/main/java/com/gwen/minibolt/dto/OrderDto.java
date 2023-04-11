@@ -11,6 +11,6 @@ import java.util.List;
 /**
  * A DTO for the {@link Order} entity
  */
-public record OrderDto(Long id, ORDER_STATUS status, Date timestamp, double totalPrice, List<FoodDto> food, Long userId,
+public record OrderDto(String id, ORDER_STATUS status, Date timestamp, double totalPrice, List<FoodDto> food, String userId,
                        String userName, ROLE userRole) implements Serializable {
 }

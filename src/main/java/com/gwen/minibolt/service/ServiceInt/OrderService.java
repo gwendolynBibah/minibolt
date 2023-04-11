@@ -9,9 +9,9 @@ public interface OrderService {
 
     OrderDto createOrder(OrderDto order);
 
-    OrderDto getOrder(long id);
+    OrderDto getOrder(String id);
 
-    void deleteOrder(Long id);
+    void deleteOrder(String id);
 
-    OrderDto updateOrder(Long orderId, OrderDto orderDto);
+    OrderDto updateOrder(String orderId, OrderDto orderDto);
 }

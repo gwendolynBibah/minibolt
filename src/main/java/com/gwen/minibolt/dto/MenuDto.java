@@ -7,5 +7,5 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link Menu} entity
  */
-public record MenuDto(Long menuId, String menuName) implements Serializable {
+public record MenuDto(String menuId, String menuName) implements Serializable {
 }

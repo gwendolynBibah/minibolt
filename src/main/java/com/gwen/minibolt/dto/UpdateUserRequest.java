@@ -8,5 +8,5 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link User} entity
  */
-public record UpdateUserRequest(Long id, String name, ROLE role, String password) implements Serializable {
+public record UpdateUserRequest(String id, String name, ROLE role, String password) implements Serializable {
 }

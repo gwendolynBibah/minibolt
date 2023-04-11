@@ -28,7 +28,7 @@ public class MenuController {
     }
 
     @GetMapping("/restaurant")
-    public List<MenuDto> getMenuByRestaurant(@RequestParam("id") @NotNull Long id) {
+    public List<MenuDto> getMenuByRestaurant(@RequestParam("id") @NotNull String id) {
         return this.menuService.getRestaurantMenuList(id);
     }
 

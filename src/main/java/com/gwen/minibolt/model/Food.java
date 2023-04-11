@@ -3,8 +3,8 @@ package com.gwen.minibolt.model;
 import com.gwen.minibolt.enums.GENERAL_STATUS;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 @Data
 @Entity
@@ -13,8 +13,9 @@ import org.hibernate.annotations.Where;
 //@Where(clause = "deleted=false")
 public class Food {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    private String id;
     private String name;
     private double price;
     private String description;

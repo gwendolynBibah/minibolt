@@ -34,7 +34,7 @@ public class ReadLocationData implements CommandLineRunner {
                     Town town = new Town();
                     town.setName(townName);
                     town.setRegion(region);
-                    if (this.townRepository.findByName(townName).isEmpty()) {
+                    if (this.townRepository.findByNameIgnoreCase(townName).isEmpty()) {
                         this.townRepository.save(town);
                     }
                 });

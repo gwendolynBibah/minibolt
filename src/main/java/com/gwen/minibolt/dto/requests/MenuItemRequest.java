@@ -1,4 +1,4 @@
 package com.gwen.minibolt.dto.requests;
 
-public record MenuItemRequest(Long menuId, Long foodId) {
+public record MenuItemRequest(String menuId, String foodId) {
 }

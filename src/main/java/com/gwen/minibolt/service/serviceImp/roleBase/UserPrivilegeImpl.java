@@ -33,7 +33,7 @@ public class UserPrivilegeImpl implements UserPrivilege {
     private final ApiMapper apiMapper;
 
     @Override
-    public RestaurantDto rateRestaurant(Long restaurantId, Double rating) {
+    public RestaurantDto rateRestaurant(String restaurantId, Double rating) {
         return restaurantRepository.findById(restaurantId).map(restaurant -> {
             //TODO:: do some calculation here
             restaurant.setRating(rating);
@@ -68,7 +68,7 @@ public class UserPrivilegeImpl implements UserPrivilege {
 
     @Override
     public Map<String, List<RestaurantDto>> getRestaurantGroupedByLocation() {
-        return restaurantRepository.findAll().stream().collect(Collectors.groupingBy(Restaurant::getLocation,
+        return restaurantRepository.findAll().stream().collect(Collectors.groupingBy(restaurant->restaurant.getLocation().getName(),
                 collectingAndThen(toList(), restaurants -> restaurants.stream().map(apiMapper::restaurantToRestaurantDto)
                         .toList())));
     }
@@ -85,13 +85,13 @@ public class UserPrivilegeImpl implements UserPrivilege {
     }
 
     @Override
-    public ORDER_STATUS getOrderStatus(Long orderId) {
+    public ORDER_STATUS getOrderStatus(String orderId) {
         return orderRepository.findById(orderId).map(Order::getStatus)
                 .orElseThrow();
     }
 
     @Override
-    public List<MenuDto> getRestaurantMenuAndFoodPrices(Long restaurantId) {
+    public List<MenuDto> getRestaurantMenuAndFoodPrices(String restaurantId) {
         return restaurantRepository.findById(restaurantId).stream()
                 .flatMap(restaurant -> restaurant.getMenus().stream().map(apiMapper::menuToMenuDto).toList().stream())
                 .toList();
@@ -105,7 +105,7 @@ public class UserPrivilegeImpl implements UserPrivilege {
     }
 
     @Override
-    public List<MenuDto> getRestaurantMenuByStatus(Long restaurantId, GENERAL_STATUS status) {
+    public List<MenuDto> getRestaurantMenuByStatus(String restaurantId, GENERAL_STATUS status) {
         return restaurantRepository.findByIdAndStatus(restaurantId, status)
                 .map(restaurant -> restaurant.getMenus().stream().map(apiMapper::menuToMenuDto).toList())
                 .orElseThrow();

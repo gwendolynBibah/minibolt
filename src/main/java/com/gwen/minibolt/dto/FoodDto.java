@@ -7,6 +7,6 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link Food} entity
  */
-public record FoodDto(Long id, String name, double price, String description, Long menuId, String menuName,
-                      Long restaurantId, String restaurantName) implements Serializable {
+public record FoodDto(String id, String name, double price, String description, String menuId, String menuName,
+                      String restaurantId, String restaurantName) implements Serializable {
 }

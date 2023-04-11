@@ -9,18 +9,18 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminPrivilege {
-    UserDto changeUserRole(Long userId, ROLE role);
+    UserDto changeUserRole(String userId, ROLE role);
 
-    UserDto SuspendUser(Long userId);
+    UserDto SuspendUser(String userId);
 
-    RestaurantDto suspendRestaurant(Long restaurantId);
+    RestaurantDto suspendRestaurant(String restaurantId);
 
     Map<UserDto, List<RestaurantDto>> getRestaurantsAndOwners();
 
-    UserDto getRestaurantOwner(Long restaurant);
+    UserDto getRestaurantOwner(String restaurant);
 
-    List<RestaurantDto> getOwnerRestaurant(Long userId);
+    List<RestaurantDto> getOwnerRestaurant(String userId);
 
-    List<OrderItemDto> getRestaurantOrders(Long restaurantId);
+    List<OrderItemDto> getRestaurantOrders(String restaurantId);
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface UserPrivilege {
-    RestaurantDto rateRestaurant(Long restaurant, Double rating);
+    RestaurantDto rateRestaurant(String restaurant, Double rating);
 
     OrderItemDto placeOrderItem(OrderItemDto orderItemDto);
 
@@ -23,13 +23,13 @@ public interface UserPrivilege {
 
     Object ownARestaurant(Object ownershipDetails);
 
-    ORDER_STATUS getOrderStatus(Long orderId);
+    ORDER_STATUS getOrderStatus(String orderId);
 
-    List<MenuDto> getRestaurantMenuAndFoodPrices(Long restaurantId);
+    List<MenuDto> getRestaurantMenuAndFoodPrices(String restaurantId);
 
     List<RestaurantDto> getRestaurantsByStatusAndLocation(GENERAL_STATUS status, String location);
 
-    List<MenuDto> getRestaurantMenuByStatus(Long restaurantId, GENERAL_STATUS status);
+    List<MenuDto> getRestaurantMenuByStatus(String restaurantId, GENERAL_STATUS status);
 
     List<RestaurantDto> getRestaurantsByStatus(GENERAL_STATUS status);
 }

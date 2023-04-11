@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * A DTO for the {@link OrderItem} entity
  */
-public record OrderItemDto(Long id, OrderDto order, FoodDto food, Date timeStamp) implements Serializable {
+public record OrderItemDto(String id, OrderDto order, FoodDto food, Date timeStamp) implements Serializable {
     /**
      * A DTO for the {@link Order} entity
      */

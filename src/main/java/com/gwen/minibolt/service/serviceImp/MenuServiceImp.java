@@ -30,7 +30,7 @@ public class MenuServiceImp implements MenuService {
     }
 
     @Override
-    public List<MenuDto> getRestaurantMenuList(Long restaurantId) {
+    public List<MenuDto> getRestaurantMenuList(String restaurantId) {
         return this.menuRepository.findAllByRestaurantId(restaurantId)
                 .stream().map(mapper::menuToMenuDto).toList();
 
@@ -51,18 +51,18 @@ public class MenuServiceImp implements MenuService {
     }
 
     @Override
-    public MenuDto getMenu(long id) {
+    public MenuDto getMenu(String id) {
         return this.getMenuFromDatabase(id);
     }
 
     @Override
-    public void deleteMenu(Long id) {
+    public void deleteMenu(String id) {
         if (Objects.nonNull(id)) {
             menuRepository.findById(id).ifPresent(menuRepository::delete);
         }
     }
 
-    private MenuDto getMenuFromDatabase(long id) {
+    private MenuDto getMenuFromDatabase(String id) {
         return menuRepository.findById(id).map(mapper::menuToMenuDto)
                 .orElseThrow(() ->
                 {

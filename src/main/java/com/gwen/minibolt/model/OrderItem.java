@@ -3,6 +3,7 @@ package com.gwen.minibolt.model;
 import com.gwen.minibolt.enums.ORDER_STATUS;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
 
 import java.util.Date;
@@ -14,9 +15,9 @@ import java.util.Date;
 //@Where(clause = "deleted=false")
 public class OrderItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    private String id;
     private Date timeStamp;
     @Enumerated(value = EnumType.STRING)
     private ORDER_STATUS status;

@@ -2,6 +2,7 @@ package com.gwen.minibolt.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Entity
@@ -9,11 +10,14 @@ import lombok.Data;
 public class Image {
 
     @Id
-    @GeneratedValue
-    Long id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid",strategy = "uuid2")
+    String id;
 
     @Lob
-    Byte[] content;
+    byte[] content;
+
+    private String fileType;
 
     String name;
 

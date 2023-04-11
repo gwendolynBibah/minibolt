@@ -33,7 +33,7 @@ public class OrderController {
     }
 
     @GetMapping("{orderId}")
-    public OrderDto getOrder(@PathVariable Long orderId) {
+    public OrderDto getOrder(@PathVariable String orderId) {
         return this.orderService.getOrder(orderId);
     }
 
@@ -43,17 +43,17 @@ public class OrderController {
     }
 
     @PutMapping("{orderId}")
-    public OrderDto updateOrder(@PathVariable Long orderId, @RequestBody OrderDto orderDto) {
+    public OrderDto updateOrder(@PathVariable String orderId, @RequestBody OrderDto orderDto) {
         return this.orderService.updateOrder(orderId, orderDto);
     }
 
     @DeleteMapping("{orderId}")
-    public void deleteOrder(@PathVariable Long orderId) {
+    public void deleteOrder(@PathVariable String orderId) {
         this.orderService.deleteOrder(orderId);
     }
 
     @GetMapping("{orderId}/status")
-    public ORDER_STATUS getOrderStatus(@PathVariable Long orderId) {
+    public ORDER_STATUS getOrderStatus(@PathVariable String orderId) {
         return this.userPrivilege.getOrderStatus(orderId);
     }
     @PostMapping("order")

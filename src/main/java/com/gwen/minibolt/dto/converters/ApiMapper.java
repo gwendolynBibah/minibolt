@@ -8,7 +8,7 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ApiMapper {
     @Mapping(source = "userId", target = "id")
-    @Mapping(source = "userName", target = "name")
+    @Mapping(source = "userName", target = "email")
 //    @Mapping(source = "isActive", target = "isActive")
     User userDtoToUser(UserDto userDto);
 
@@ -19,10 +19,12 @@ public interface ApiMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     User updateUserFromUserDto(UserDto userDto1, @MappingTarget User user);
 
+    @Mapping(source = "restaurant.location", target = "restaurant.location.name")
     Menu menuDtoToMenu(MenuDto menuDto);
-
+    @InheritInverseConfiguration(name = "menuDtoToMenu")
     MenuDto menuToMenuDto(Menu menu);
 
+    @InheritConfiguration(name = "menuDtoToMenu")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Menu updateMenuFromMenuDto(MenuDto menuDto, @MappingTarget Menu menu);
 
@@ -32,7 +34,7 @@ public interface ApiMapper {
 //    }
 
     @Mapping(source = "userId", target = "user.id")
-    @Mapping(source = "userName", target = "user.name")
+    @Mapping(source = "userName", target = "user.email")
     @Mapping(source = "userRole", target = "user.role")
     Order orderDtoToOrder(OrderDto orderDto);
 
@@ -74,7 +76,7 @@ public interface ApiMapper {
     User registerRequestToUser(RegisterRequest registerRequest);
 
     @Mapping(source = "ownerId", target = "owner.id")
-//    @Mapping(source = "imageContent", target = "image.content")
+    @Mapping(source = "location", target = "location.name")
     Restaurant registerRestaurantDtoToRestaurant(RegisterRestaurantDto registerRestaurantDto);
 
     @InheritInverseConfiguration(name = "registerRestaurantDtoToRestaurant")
@@ -106,7 +108,8 @@ public interface ApiMapper {
     Menu updateMenuFromCreateMenuDto(CreateMenuDto createMenuDto, @MappingTarget Menu menu);
 
     @Mapping(source = "ownerId", target = "owner.id")
-    @Mapping(source = "ownerName", target = "owner.name")
+    @Mapping(source = "ownerName", target = "owner.email")
+    @Mapping(source = "location", target = "location.name")
     Restaurant restaurantDtoToRestaurant(RestaurantDto restaurantDto);
 
     @InheritInverseConfiguration(name = "restaurantDtoToRestaurant")

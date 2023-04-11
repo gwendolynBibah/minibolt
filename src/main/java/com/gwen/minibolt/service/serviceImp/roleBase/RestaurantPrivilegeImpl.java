@@ -45,7 +45,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public List<FoodDto> displayAllFoodByRestaurant(@NotNull Long restaurantId) {
+    public List<FoodDto> displayAllFoodByRestaurant(@NotNull String restaurantId) {
         return menuRepository.findAllByRestaurantId(restaurantId)
                 .stream().flatMap(menu -> menu.getFoods().stream().map(mapper::foodToFoodDto))
                 .distinct().toList();
@@ -56,7 +56,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public List<MenuDto> displayAllMenuByRestaurant(@NotNull Long restaurantId) {
+    public List<MenuDto> displayAllMenuByRestaurant(@NotNull String restaurantId) {
         return menuService.getRestaurantMenuList(restaurantId);
     }
 
@@ -66,7 +66,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public MenuDto changeMenuStatus(@NotNull Long menuId, GENERAL_STATUS status) {
+    public MenuDto changeMenuStatus(@NotNull String menuId, GENERAL_STATUS status) {
         return menuRepository.findById(menuId).map(menu -> {
             menu.setStatus(status);
             return mapper.menuToMenuDto(this.menuRepository.save(menu));
@@ -79,7 +79,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public FoodDto changeFoodStatus(Long foodId, GENERAL_STATUS status) {
+    public FoodDto changeFoodStatus(String foodId, GENERAL_STATUS status) {
         return foodRepository.findById(foodId).map(food -> {
             food.setStatus(status);
             return mapper.foodToFoodDto(foodRepository.save(food));
@@ -92,7 +92,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public RestaurantDto changeRestaurantStatus(Long restaurantId, GENERAL_STATUS status) {
+    public RestaurantDto changeRestaurantStatus(String restaurantId, GENERAL_STATUS status) {
         return restaurantRepository.findById(restaurantId).map(restaurant -> {
             restaurant.setStatus(status);
             restaurantRepository.save(restaurant);
@@ -106,7 +106,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public OrderItemDto confirmOrderItem(Long orderItemId, ORDER_STATUS status) {
+    public OrderItemDto confirmOrderItem(String orderItemId, ORDER_STATUS status) {
         return orderItemRepository.findById(orderItemId).map(orderItem -> {
             orderItem.setStatus(status);
             return mapper.orderItemToOrderItemDto(orderItem);
@@ -118,7 +118,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public List<UserDto> getRestaurantCustomers(Long restaurantId) {
+    public List<UserDto> getRestaurantCustomers(String restaurantId) {
         return orderItemRepository.findAllByRestaurantId(restaurantId)
                 .stream().map(orderItem -> mapper.userToUserDto(orderItem.getOrder().getUser()))
                 .toList();
@@ -129,7 +129,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public List<UserDto> getRestaurantCustomersByMenu(Long menuId) {
+    public List<UserDto> getRestaurantCustomersByMenu(String menuId) {
         return menuRepository.findById(menuId).map(menu -> menu.getFoods().stream()
                         .flatMap(food -> orderItemRepository.findAllByFoodId(food.getId())
                                 .stream().map(orderItem -> mapper.userToUserDto(orderItem.getOrder().getUser())))
@@ -143,7 +143,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public List<UserDto> getRestaurantCustomersByFood(Long restaurantId, Long foodId) {
+    public List<UserDto> getRestaurantCustomersByFood(String restaurantId, String foodId) {
         return orderItemRepository.findAllByFoodIdAndRestaurantId(foodId, restaurantId).stream()
                 .map(orderItem -> mapper.userToUserDto(orderItem.getOrder().getUser())).toList();
     }
@@ -153,7 +153,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(Long restaurantId) {
+    public Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(String restaurantId) {
         return orderItemRepository.findAllByRestaurantId(restaurantId)
                 .stream().collect(Collectors.groupingBy(orderItem -> mapper.userToUserDto(orderItem.getOrder().getUser()),
                         collectingAndThen(toList(), orderItems -> orderItems.stream().map(mapper::orderItemToOrderItemDto).toList())));
@@ -165,7 +165,7 @@ public class RestaurantPrivilegeImpl implements RestaurantPrivilege {
      * @return
      */
     @Override
-    public MenuDto removeMenuItem(Long restaurantId, MenuItemRequest itemRequest) {
+    public MenuDto removeMenuItem(String restaurantId, MenuItemRequest itemRequest) {
         return menuRepository.findByRestaurantIdAndId(restaurantId, itemRequest.menuId()).map(menu -> {
             menu.getFoods().removeIf(food -> food.getId().equals(itemRequest.foodId()));
             foodService.deleteFood(itemRequest.foodId());

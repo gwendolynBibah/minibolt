@@ -2,10 +2,12 @@ package com.gwen.minibolt.controllers;
 
 import com.gwen.minibolt.Dtos.MenuDto;
 import com.gwen.minibolt.dto.*;
+import com.gwen.minibolt.dto.converters.ApiMapper;
 import com.gwen.minibolt.dto.requests.MenuItemRequest;
 import com.gwen.minibolt.dto.subDto.RestaurantSubDto;
 import com.gwen.minibolt.enums.GENERAL_STATUS;
 import com.gwen.minibolt.enums.ORDER_STATUS;
+import com.gwen.minibolt.service.ServiceInt.FileManagementService;
 import com.gwen.minibolt.service.ServiceInt.RestaurantService;
 import com.gwen.minibolt.service.ServiceInt.roleBase.AdminPrivilege;
 import com.gwen.minibolt.service.ServiceInt.roleBase.RestaurantPrivilege;
@@ -22,9 +24,11 @@ import java.util.Map;
 @RequestMapping("/api/v1/restaurants")
 public class RestaurantController {
     private final RestaurantService restaurantService;
+    private final ApiMapper apiMapper;
     private final AdminPrivilege adminPrivilege;
     private final UserPrivilege userPrivilege;
     private final RestaurantPrivilege restaurantPrivilege;
+    private final FileManagementService fileManagementService;
 
     @GetMapping
     public List<RestaurantSubDto> getRestaurants() {
@@ -33,83 +37,83 @@ public class RestaurantController {
 
     @PostMapping
     public RestaurantDto registerRestaurant(RegisterRestaurantDto restaurant) {
-        return this.restaurantService.createRestaurant(restaurant);
+        return this.apiMapper.restaurantToRestaurantDto(this.restaurantService.createRestaurant(restaurant));
     }
 
     @GetMapping("restaurant")
-    public RestaurantDto getRestaurant(@RequestParam(value = "id") @NotNull Long id) {
+    public RestaurantDto getRestaurant(@RequestParam(value = "id") @NotNull String id) {
         return this.restaurantService.getRestaurant(id);
     }
 
     @GetMapping("{restaurantId}/menu/list")
-    public List<MenuDto> displayAllMenuByRestaurant(@PathVariable Long restaurantId) {
+    public List<MenuDto> displayAllMenuByRestaurant(@PathVariable String restaurantId) {
         return this.restaurantPrivilege.displayAllMenuByRestaurant(restaurantId);
     }
 
     @PatchMapping
-    public RestaurantDto updateRestaurant(@RequestParam("id") @NotNull Long id, @RequestBody RegisterRestaurantDto restaurantDto) {
+    public RestaurantDto updateRestaurant(@RequestParam("id") @NotNull String id, @RequestBody RegisterRestaurantDto restaurantDto) {
         return this.restaurantService.updateRestaurant(id, restaurantDto);
     }
 
     @DeleteMapping
-    public void removeRestaurant(@RequestParam(value = "id") @NotNull Long id) {
+    public void removeRestaurant(@RequestParam(value = "id") @NotNull String id) {
         this.restaurantService.deleteRestaurant(id);
     }
 
 
     //privileges for a user
     @PostMapping("{restaurantId}")
-    public RestaurantDto rateARestaurant(@RequestBody double rating, @PathVariable Long restaurantId) {
+    public RestaurantDto rateARestaurant(@RequestBody double rating, @PathVariable String restaurantId) {
         return this.userPrivilege.rateRestaurant(restaurantId, rating);
     }
 
     @GetMapping("{restaurantId}/foodList")
-    public List<FoodDto> displayAllFoodByRestaurant(@PathVariable Long restaurantId) {
+    public List<FoodDto> displayAllFoodByRestaurant(@PathVariable String restaurantId) {
         return this.restaurantPrivilege.displayAllFoodByRestaurant(restaurantId);
     }
 
     @GetMapping("restaurant/{restaurantId}")
-    public List<UserDto> getCustomersOfRestaurant(@PathVariable Long restaurantId) {
+    public List<UserDto> getCustomersOfRestaurant(@PathVariable String restaurantId) {
         return this.restaurantPrivilege.getRestaurantCustomers(restaurantId);
     }
 
     @GetMapping("{restaurantId}/status/{status}")
-    public RestaurantDto changeRestaurantStatus(@PathVariable Long restaurantId, @PathVariable GENERAL_STATUS status) {
+    public RestaurantDto changeRestaurantStatus(@PathVariable String restaurantId, @PathVariable GENERAL_STATUS status) {
         return this.restaurantPrivilege.changeRestaurantStatus(restaurantId, status);
     }
 
     @PostMapping("{restaurantId}/food")
-    public FoodDto changeFoodStatus(@PathVariable Long restaurantId, @RequestParam("foodId") Long foodId, @RequestBody GENERAL_STATUS status) {
+    public FoodDto changeFoodStatus(@PathVariable String restaurantId, @RequestParam("foodId") String foodId, @RequestBody GENERAL_STATUS status) {
         return this.restaurantPrivilege.changeFoodStatus(foodId, status);
     }
 
     @PostMapping("{restaurantId}/menu")
-    public MenuDto changeMenuStatus(@PathVariable Long restaurantId, @RequestParam Long menuId, @RequestBody GENERAL_STATUS status) {
+    public MenuDto changeMenuStatus(@PathVariable String restaurantId, @RequestParam String menuId, @RequestBody GENERAL_STATUS status) {
         return this.restaurantPrivilege.changeMenuStatus(menuId, status);
     }
 
     @PostMapping("{restaurantId}/orderItem")
-    public OrderItemDto hm(@PathVariable Long restaurantId, @RequestParam Long orderItemId, @RequestBody ORDER_STATUS status) {
+    public OrderItemDto hm(@PathVariable String restaurantId, @RequestParam String orderItemId, @RequestBody ORDER_STATUS status) {
         return this.restaurantPrivilege.confirmOrderItem(orderItemId, status);
     }
 
     @GetMapping("{restaurantId}/customers/menu")
-    public List<UserDto> getRestaurantCustomersByMenu(@PathVariable Long restaurantId, @RequestParam Long menuId) {
+    public List<UserDto> getRestaurantCustomersByMenu(@PathVariable String restaurantId, @RequestParam String menuId) {
         return this.restaurantPrivilege.getRestaurantCustomersByMenu(menuId);
     }
 
     @GetMapping("{restaurantId}/customers/food")
-    public List<UserDto> getRestaurantCustomersByFood(@RequestParam Long foodId, @PathVariable @NotNull Long restaurantId) {
+    public List<UserDto> getRestaurantCustomersByFood(@RequestParam String foodId, @PathVariable @NotNull String restaurantId) {
         return this.restaurantPrivilege.getRestaurantCustomersByFood(restaurantId, foodId);
     }
 
     @GetMapping("{restaurantId}/customers")
-    public Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(@PathVariable Long restaurantId) {
+    public Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(@PathVariable String restaurantId) {
         return this.restaurantPrivilege.getCustomersAndTheirOrdersByRestaurant(restaurantId);
     }
 
     @PutMapping("{restaurantId}/menu-item")
-    public MenuDto removeMenuItem(@PathVariable Long restaurantId, @RequestBody MenuItemRequest menuItem) {
+    public MenuDto removeMenuItem(@PathVariable String restaurantId, @RequestBody MenuItemRequest menuItem) {
         return this.restaurantPrivilege.removeMenuItem(restaurantId, menuItem);
     }
 
@@ -119,7 +123,7 @@ public class RestaurantController {
     }
 
     @GetMapping("{restaurantId}/menu-list")
-    public List<MenuDto> getRestaurantMenuByStatus(@PathVariable Long restaurantId, @RequestParam GENERAL_STATUS status) {
+    public List<MenuDto> getRestaurantMenuByStatus(@PathVariable String restaurantId, @RequestParam GENERAL_STATUS status) {
         return this.userPrivilege.getRestaurantMenuByStatus(restaurantId, status);
     }
 
@@ -140,7 +144,7 @@ public class RestaurantController {
 
     //TODO::Change DTO
     @GetMapping("{restaurantId}/menu/food-prices")
-    public List<MenuDto> getRestaurantMenuAndFoodPrices(@PathVariable Long restaurantId) {
+    public List<MenuDto> getRestaurantMenuAndFoodPrices(@PathVariable String restaurantId) {
         return this.userPrivilege.getRestaurantMenuAndFoodPrices(restaurantId);
     }
 
@@ -150,20 +154,20 @@ public class RestaurantController {
     }
 
     @GetMapping("{ownerId}")
-    public List<RestaurantDto> getRestaurantByOwnerId(@PathVariable Long ownerId){
+    public List<RestaurantDto> getRestaurantByOwnerId(@PathVariable String ownerId){
         return this.adminPrivilege.getOwnerRestaurant(ownerId);
     }
     @GetMapping("{restaurantId}/owner")
-    public UserDto getRestaurantOwner(@PathVariable Long restaurantId){
+    public UserDto getRestaurantOwner(@PathVariable String restaurantId){
         return this.adminPrivilege.getRestaurantOwner(restaurantId);
     }
 
     @GetMapping("{restaurantId}/orders")
-    public List<OrderItemDto> getRestaurantOrders(@PathVariable Long restaurantId){
+    public List<OrderItemDto> getRestaurantOrders(@PathVariable String restaurantId){
         return this.adminPrivilege.getRestaurantOrders(restaurantId);
     }
     @PatchMapping("suspend/{restaurantId}")
-    public RestaurantDto suspendRestaurant(@PathVariable Long restaurantId){
+    public RestaurantDto suspendRestaurant(@PathVariable String restaurantId){
         return this.adminPrivilege.suspendRestaurant(restaurantId);
     }
 }

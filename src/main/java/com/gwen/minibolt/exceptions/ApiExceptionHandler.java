@@ -1,6 +1,5 @@
 package com.gwen.minibolt.exceptions;
 
-import com.gwen.minibolt.exceptions.ApiError;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.nio.file.AccessDeniedException;
@@ -100,5 +99,13 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleAccess(AccessDeniedException ex){
         ApiError apiError = new ApiError(HttpStatus.FORBIDDEN, ex.getLocalizedMessage(), "Access Denied");
         return new ResponseEntity<>(apiError,new HttpHeaders(),apiError.getStatus());
+    }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleFileUploadException(MaxUploadSizeExceededException ex){
+        ApiError apiError = new ApiError(HttpStatus.PAYLOAD_TOO_LARGE,ex.getLocalizedMessage(),
+                "file size limit exceeded. Please make sure the file size is well within 4MB"
+                );
+        return new ResponseEntity<>(apiError,new HttpHeaders(),apiError.getStatus());
+
     }
 }

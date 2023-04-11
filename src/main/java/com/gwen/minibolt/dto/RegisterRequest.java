@@ -1,9 +1,6 @@
 package com.gwen.minibolt.dto;
 
-import com.gwen.minibolt.enums.ROLE;
 import com.gwen.minibolt.model.User;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

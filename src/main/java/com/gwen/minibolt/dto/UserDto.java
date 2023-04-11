@@ -11,6 +11,6 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link User} entity
  */
-public record UserDto(@NonNull Long userId, @NotEmpty @NotNull String userName, Boolean deleted,
+public record UserDto(@NonNull String userId, @NotEmpty @NotNull String userName, Boolean deleted,
                       ROLE role) implements Serializable {
 }

@@ -22,7 +22,7 @@ public class FoodController {
     }
 
     @GetMapping("food")
-    public FoodDto getFood(@RequestParam(value = "id") @NotNull Long id) {
+    public FoodDto getFood(@RequestParam(value = "id") @NotNull String id) {
         return this.foodService.getFood(id);
     }
 
@@ -32,13 +32,13 @@ public class FoodController {
     }
 
     @PatchMapping
-    public FoodDto updateFood(@RequestParam(value = "id") @NotNull Long id, @RequestBody CreateFoodDto food) {
+    public FoodDto updateFood(@RequestParam(value = "id") @NotNull String id, @RequestBody CreateFoodDto food) {
         return this.foodService.updateFood(id, food);
 
     }
 
     @DeleteMapping
-    public void removeFood(@RequestParam(value = "id") @NotNull Long id) {
+    public void removeFood(@RequestParam(value = "id") @NotNull String id) {
         this.foodService.deleteFood(id);
     }
 }

@@ -5,5 +5,5 @@ import java.io.Serializable;
 /**
  * A DTO for the {@link com.gwen.minibolt.model.Town} entity
  */
-public record TownDto(Long id, String name, Long regionId, String regionRegion) implements Serializable {
+public record TownDto(String id, String name, String regionId, String regionRegion) implements Serializable {
 }

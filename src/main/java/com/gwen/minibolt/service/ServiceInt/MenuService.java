@@ -9,13 +9,13 @@ import java.util.Map;
 public interface MenuService {
     List<MenuDto> getAllMenu();
 
-    List<MenuDto> getRestaurantMenuList(Long restaurantId);
+    List<MenuDto> getRestaurantMenuList(String restaurantId);
 
     Map<String, List<MenuDto>> getAllRestaurantAndTheirMenu();
 
     MenuDto createMenu(CreateMenuDto food);
 
-    MenuDto getMenu(long id);
+    MenuDto getMenu(String id);
 
-    void deleteMenu(Long id);
+    void deleteMenu(String id);
 }

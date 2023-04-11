@@ -38,19 +38,19 @@ public class FoodServiceImp implements FoodService {
     }
 
     @Override
-    public FoodDto getFood(long id) {
+    public FoodDto getFood(String id) {
         return getFoodFromDatabase(id);
     }
 
     @Override
-    public void deleteFood(Long id) {
+    public void deleteFood(String id) {
         if (Objects.nonNull(id)) {
             foodRepository.findById(id).ifPresent(foodRepository::delete);
         }
     }
 
     @Override
-    public FoodDto updateFood(Long id, CreateFoodDto food) {
+    public FoodDto updateFood(String id, CreateFoodDto food) {
         return this.foodRepository.findById(id).map(existingFood ->
                 mapper.foodToFoodDto(this.foodRepository.save(mapper.updateFoodFromCreateFoodDto(food, existingFood)))
         ).orElseThrow(() ->
@@ -62,7 +62,7 @@ public class FoodServiceImp implements FoodService {
         );
     }
 
-    private FoodDto getFoodFromDatabase(long id) {
+    private FoodDto getFoodFromDatabase(String id) {
         return foodRepository.findById(id).map(mapper::foodToFoodDto)
                 .orElseThrow(() ->
                 {

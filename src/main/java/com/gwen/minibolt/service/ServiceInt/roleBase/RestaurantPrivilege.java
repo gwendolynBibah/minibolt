@@ -13,26 +13,26 @@ import java.util.List;
 import java.util.Map;
 
 public interface RestaurantPrivilege {
-    List<FoodDto> displayAllFoodByRestaurant(Long restaurantId);
+    List<FoodDto> displayAllFoodByRestaurant(String restaurantId);
 
-    List<MenuDto> displayAllMenuByRestaurant(Long restaurantId);
+    List<MenuDto> displayAllMenuByRestaurant(String restaurantId);
 
     //I want to alert the user/customer that a particular food is finished/out of stock
-    MenuDto changeMenuStatus(Long menuId, GENERAL_STATUS status);
+    MenuDto changeMenuStatus(String menuId, GENERAL_STATUS status);
 
-    FoodDto changeFoodStatus(Long foodId, GENERAL_STATUS status);
+    FoodDto changeFoodStatus(String foodId, GENERAL_STATUS status);
 
-    RestaurantDto changeRestaurantStatus(Long restaurantId, GENERAL_STATUS status);
+    RestaurantDto changeRestaurantStatus(String restaurantId, GENERAL_STATUS status);
 
-    OrderItemDto confirmOrderItem(Long orderItemId, ORDER_STATUS status);
+    OrderItemDto confirmOrderItem(String orderItemId, ORDER_STATUS status);
 
-    List<UserDto> getRestaurantCustomers(Long restaurantId);
+    List<UserDto> getRestaurantCustomers(String restaurantId);
 
-    List<UserDto> getRestaurantCustomersByMenu(Long menuId);
+    List<UserDto> getRestaurantCustomersByMenu(String menuId);
 
-    List<UserDto> getRestaurantCustomersByFood(Long restaurantId, Long foodId);
+    List<UserDto> getRestaurantCustomersByFood(String restaurantId, String foodId);
 
-    Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(Long restaurantId);
+    Map<UserDto, List<OrderItemDto>> getCustomersAndTheirOrdersByRestaurant(String restaurantId);
 
-    MenuDto removeMenuItem(Long restaurantId, MenuItemRequest itemRequest);
+    MenuDto removeMenuItem(String restaurantId, MenuItemRequest itemRequest);
 }

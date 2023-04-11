@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+public interface RestaurantRepository extends JpaRepository<Restaurant, String> {
 
-    List<Restaurant> findAllByOwnerId(Long owner_id);
+    List<Restaurant> findAllByOwnerId(String owner_id);
 
     List<Restaurant> findAllByLocation(String location);
 
@@ -19,6 +19,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     List<Restaurant> findAllByStatus(GENERAL_STATUS status);
 
-    Optional<Restaurant> findByIdAndStatus(Long restaurantId, GENERAL_STATUS status);
+    Optional<Restaurant> findByIdAndStatus(String restaurantId, GENERAL_STATUS status);
 
 }

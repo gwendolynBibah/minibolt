@@ -10,12 +10,13 @@ import java.util.List;
 /**
  * A DTO for the {@link Restaurant} entity
  */
-public record RestaurantDto(Long id, String location, double rating, String name, GENERAL_STATUS status, Boolean isActive, List<MenuDto> menus,
-                            Long ownerId,
+public record RestaurantDto(String id, String location, double rating, String name, GENERAL_STATUS status, Boolean isActive, List<MenuDto> menus,
+                            String ownerId,
+                            String image,
                             String ownerName) implements Serializable {
     /**
      * A DTO for the {@link com.gwen.minibolt.model.Menu} entity
      */
-    public record MenuDto(Long id, String name, List<FoodSubDto> foods) implements Serializable {
+    public record MenuDto(String id, String name, List<FoodSubDto> foods) implements Serializable {
     }
 }

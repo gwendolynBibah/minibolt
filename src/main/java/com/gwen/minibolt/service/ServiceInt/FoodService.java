@@ -12,9 +12,9 @@ public interface FoodService {
 
     FoodDto createFood(CreateFoodDto food);
 
-    FoodDto getFood(@NotNull long id);
+    FoodDto getFood(@NotNull String id);
 
-    void deleteFood(@NotNull Long id);
+    void deleteFood(@NotNull String id);
 
-    FoodDto updateFood(@NotNull Long id, CreateFoodDto food);
+    FoodDto updateFood(@NotNull String id, CreateFoodDto food);
 }

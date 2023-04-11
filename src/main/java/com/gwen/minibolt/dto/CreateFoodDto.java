@@ -13,5 +13,5 @@ import java.io.Serializable;
 public record CreateFoodDto(@NotNull @NotBlank(message = "name is mandatory.") String name,
                             @NotNull @Min(value = 0, message = "least is 0") double price,
                             @NotNull @NotBlank(message = "description is mandatory.") String description,
-                            Long menuId) implements Serializable {
+                            String menuId) implements Serializable {
 }

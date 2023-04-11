@@ -29,12 +29,12 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public OrderDto getOrder(long id) {
+    public OrderDto getOrder(String id) {
         return this.getOrderFromDatabase(id);
     }
 
     @Override
-    public void deleteOrder(Long id) {
+    public void deleteOrder(String id) {
         if (Objects.nonNull(id)) {
             orderRepository.findById(id).ifPresent(orderRepository::delete);
         }
@@ -47,11 +47,11 @@ public class OrderServiceImp implements OrderService {
      * @return
      */
     @Override
-    public OrderDto updateOrder(Long orderId, OrderDto orderDto) {
+    public OrderDto updateOrder(String orderId, OrderDto orderDto) {
         return null;
     }
 
-    private OrderDto getOrderFromDatabase(long id) {
+    private OrderDto getOrderFromDatabase(String id) {
         return orderRepository.findById(id).map(mapper::orderToOrderDto)
                 .orElseThrow(() ->
                 {

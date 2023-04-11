@@ -6,6 +6,9 @@ import com.gwen.minibolt.dto.UpdateUserRequest;
 import com.gwen.minibolt.dto.UserDto;
 import com.gwen.minibolt.dto.converters.ApiMapper;
 import com.gwen.minibolt.enums.ROLE;
+import com.gwen.minibolt.export_data.ExcelMetaDataDto;
+import com.gwen.minibolt.export_data.ExcelService;
+import com.gwen.minibolt.export_data.ResourceDto;
 import com.gwen.minibolt.model.User;
 import com.gwen.minibolt.repository.UserRepository;
 import com.gwen.minibolt.service.ServiceInt.UserService;
@@ -13,6 +16,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,9 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -35,6 +37,7 @@ public class UserServiceImp implements UserService {
     private final AuthenticationManager authenticationManager;
 
     private final PasswordEncoder passwordEncoder;
+    private ExcelService excelService;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -72,7 +75,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto updateUserDetails(UpdateUserRequest user, @NotNull @NotBlank Long userId) {
+    public UserDto updateUserDetails(UpdateUserRequest user, @NotNull @NotBlank String userId) {
         return this.userRepository.findById(userId)
                 .map(existingUser ->
                         mapper.userToUserDto(this.userRepository.save(mapper.updateUserFromUpdateUserRequest(user, existingUser)))
@@ -85,12 +88,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDto getUser(long id) {
+    public UserDto getUser(String id) {
         return getUserFromDatabase(id);
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         if (Objects.nonNull(id)) {
             userRepository.findById(id).ifPresent(userRepository::delete);
         }
@@ -107,7 +110,7 @@ public class UserServiceImp implements UserService {
         return generateToken(registerRequest);
     }
 
-    private UserDto getUserFromDatabase(long userId) {
+    private UserDto getUserFromDatabase(String userId) {
 
         return userRepository.findById(userId).map(mapper::userToUserDto)
                 .orElseThrow(() ->
@@ -116,6 +119,32 @@ public class UserServiceImp implements UserService {
                     log.debug(message);
                     return new RuntimeException(message);
                 });
+    }
+    @Override
+    public ExcelMetaDataDto prepareExcelData(){
+        val excelMetaData = new ExcelMetaDataDto();
+        excelMetaData.setTableName("Users");
+        excelMetaData.setHeaders(List.of("ID","Email","delete","Role"));
+        val users = getAllUsers();
+        List<Map<String,String>> metaData = new ArrayList<>();
+
+        for (UserDto user:users){
+            Map<String,String> data = new HashMap<>();
+            data.put("ID", user.userId().toString());
+            data.put("Email", user.userName());
+            data.put("Deleted",user.deleted().toString());
+            data.put("Role",user.role().name());
+            metaData.add(data);
+        }
+        excelMetaData.setData(metaData);
+        return excelMetaData;
+    }
+    @Override
+    public ResourceDto exportExcel(){
+        val res = excelService.exportExcel(prepareExcelData());
+        res.setFilename("Users");
+        return res;
+
     }
 
 }

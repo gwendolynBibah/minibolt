@@ -1,4 +1,4 @@
-package com.gwen.minibolt.service.serviceImp;
+package com.gwen.minibolt.service.serviceImp.utility_service;
 
 import com.gwen.minibolt.model.Image;
 import com.gwen.minibolt.repository.ImageRepository;

@@ -1,4 +1,4 @@
-package com.gwen.minibolt.service.serviceImp;
+package com.gwen.minibolt.service.serviceImp.utility_service;
 
 import com.gwen.minibolt.enums.GENERAL_STATUS;
 import com.gwen.minibolt.enums.ORDER_STATUS;

@@ -1,9 +1,10 @@
-package com.gwen.minibolt.service.serviceImp;
+package com.gwen.minibolt.service.serviceImp.utility_service;
 
 import com.gwen.minibolt.service.ServiceInt.EmailSenderService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,7 +18,7 @@ import java.util.Objects;
 public class EmailSenderServiceImpl implements EmailSenderService {
     private final JavaMailSender javaMailSender;
 
-    //    @Value("${spring.mail.username}")
+    @Value("${spring.mail.username}")
     private String senderAddress;
 
     /**
@@ -31,7 +32,7 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     public String sendMailWithAttachment(String toMail, String body, String subject, String attachment) throws MessagingException {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
-            messageHelper.setFrom("boltzmini@gmail.com");
+            messageHelper.setFrom(senderAddress);
             messageHelper.setTo(toMail);
             messageHelper.setText(body);
             messageHelper.setSubject(subject);

@@ -1,10 +1,12 @@
 package com.gwen.minibolt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gwen.minibolt.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,13 +19,16 @@ public class Order {
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
     private Date timestamp;
+    private Double totalPrice;
 
     //food foreign key
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Food> food;
+    @JsonIgnore
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 
     //user foreign key
     @ManyToOne
-    private User user;
+    @JoinColumn(name = "User_id", nullable = false)
+    private MiniboltUser miniboltUser;
 
 }

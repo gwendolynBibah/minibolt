@@ -1,9 +1,11 @@
 package com.gwen.minibolt.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.PersistenceConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,10 +18,12 @@ public class Menu {
     private String menuName;
 
     //food foreign key
-    @OneToMany
-    private Set<Food> food;
+    @JsonIgnore
+    @OneToMany(mappedBy = "menu")
+    private List<Food> food;
 
     //restaurant key
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 }

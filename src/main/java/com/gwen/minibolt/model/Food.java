@@ -13,4 +13,9 @@ public class Food {
     private String foodName;
     private Double foodPrice;
     private String foodDescription;
+
+    //food foreign key
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = false)
+    private Menu menu;
 }

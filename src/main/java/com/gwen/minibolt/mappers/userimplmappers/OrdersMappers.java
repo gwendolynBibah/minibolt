@@ -28,7 +28,7 @@ public class OrdersMappers {
 
         return orderItem;
     }
-    public Restaurant toRestaurantItem(OrdersDto ordersDto) {
+    public Restaurant toRestaurantEntity(OrdersDto ordersDto) {
         Restaurant restaurant =  new Restaurant();
         restaurant.setRestaurantName(ordersDto.getRestaurantName());
 
